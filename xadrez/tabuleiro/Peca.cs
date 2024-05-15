@@ -13,8 +13,9 @@ namespace xadrez.tabuleiro {
 
         public Peca() { }
 
-        public Peca(Posicao posicao, Cor cor, Tabuleiro tab) {
-            Posicao = posicao;
+        public Peca(Tabuleiro tab, Cor cor) {
+            Posicao = null;
+            Tab = tab;
             Cor = cor;
             QteMovimentos = 0;
         }
