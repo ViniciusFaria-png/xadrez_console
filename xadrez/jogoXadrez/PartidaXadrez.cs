@@ -33,6 +33,25 @@ namespace xadrez.jogoXadrez {
             if(pecaCapturada != null) {
                 capturadas.Add(pecaCapturada);
             }
+
+            //#Jogada especial roque pequeno
+            if(p is Rei && destino.Coluna == origem.Coluna + 2) {
+                Posicao origemT = new Posicao(origem.Linha, origem.Coluna + 3);
+                Posicao destinoT = new Posicao(origem.Linha, origem.Coluna + 1);
+                Peca T = tab.retirarPeca(origemT);
+                T.incrementarQteMovimentos();
+                tab.colocarPeca(T, destinoT);
+
+            }
+            //#Jogada especial roque grande
+            if (p is Rei && destino.Coluna == origem.Coluna - 2) {
+                Posicao origemT = new Posicao(origem.Linha, origem.Coluna - 4);
+                Posicao destinoT = new Posicao(origem.Linha, origem.Coluna - 1);
+                Peca T = tab.retirarPeca(origemT);
+                T.incrementarQteMovimentos();
+                tab.colocarPeca(T, destinoT);
+
+            }
             return pecaCapturada;
         }
 
@@ -46,6 +65,25 @@ namespace xadrez.jogoXadrez {
                 }
             }
             tab.colocarPeca(p, origem);
+
+            //#Jogada especial roque pequeno
+            if (p is Rei && destino.Coluna == origem.Coluna + 2) {
+                Posicao origemT = new Posicao(origem.Linha, origem.Coluna + 3);
+                Posicao destinoT = new Posicao(origem.Linha, origem.Coluna + 1);
+                Peca T = tab.retirarPeca(destinoT);
+                T.decrementarQteMovimentos();
+                tab.colocarPeca(T, origemT);
+
+            }
+            //#Jogada especial roque grande
+            if (p is Rei && destino.Coluna == origem.Coluna - 2) {
+                Posicao origemT = new Posicao(origem.Linha, origem.Coluna - 4);
+                Posicao destinoT = new Posicao(origem.Linha, origem.Coluna - 1);
+                Peca T = tab.retirarPeca(destinoT);
+                T.decrementarQteMovimentos();
+                tab.colocarPeca(T, origemT);
+
+            }
         }
 
         public void realizaJogada(Posicao origem, Posicao destino) {
