@@ -11,18 +11,19 @@ namespace xadrez.tabuleiro {
         public int QteMovimentos { get; protected set; }
         public Tabuleiro Tab { get; protected set; }
 
-        public Peca() { }
-
         public Peca(Tabuleiro tab, Cor cor) {
             Posicao = null;
             Tab = tab;
             Cor = cor;
             QteMovimentos = 0;
         }
-
         
         public void incrementarQteMovimentos() {
             QteMovimentos++;
+        }
+
+        public void decrementarQteMovimentos() {
+            QteMovimentos--;
         }
 
         public bool existeMovimentosPossiveis() {
