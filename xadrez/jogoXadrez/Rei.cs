@@ -8,7 +8,11 @@ using xadrez.tabuleiro;
 
 namespace xadrez.jogoXadrez {
     internal class Rei : Peca{
-        public Rei(Tabuleiro tab, Cor cor): base(tab, cor) { }
+
+        private PartidaXadrez partida;
+        public Rei(Tabuleiro tab, Cor cor, PartidaXadrez partida): base(tab, cor) {
+            this.partida = partida;
+        }
         public override string ToString() {
             return "R";
         }
@@ -16,6 +20,11 @@ namespace xadrez.jogoXadrez {
         private bool podeMover(Posicao pos) {
             Peca p = Tab.peca(pos);
             return p == null || p.Cor != this.Cor;
+        }
+
+        private bool testeTorreParaRoque(Posicao pos) {
+            Peca p = Tab.peca(pos);
+            return p != null && p is Torre && p.Cor == Cor && p.QteMovimentos == 0;
         }
 
         public override bool[,] movimentosPossiveis() {
@@ -56,6 +65,20 @@ namespace xadrez.jogoXadrez {
             if (Tab.posicaoValida(pos) && podeMover(pos)) {
                 mat[pos.Linha, pos.Coluna] = true;
             }
+
+            //# jogada especial
+            if(QteMovimentos == 0 && partida.xeque) {
+
+                Posicao posT1 = new Posicao(Posicao.Linha, Posicao.Coluna + 3);
+                if (testeTorreParaRoque(posT1)) {
+                    Posicao p1 = new Posicao(Posicao.Linha, Posicao.Coluna + 1);
+                    Posicao p2 = new Posicao(Posicao.Linha, Posicao.Coluna + 2);
+                    if(Tab.peca(p1)==null&& Tab.peca(p2) == null) {
+                        mat[Posicao.Linha, Posicao.Coluna] = true;
+                    }
+                }
+            }
+
 
             return mat;
 
