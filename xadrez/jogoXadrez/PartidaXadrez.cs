@@ -40,7 +40,8 @@ namespace xadrez.jogoXadrez {
             Peca p = tab.retirarPeca(destino);
             p.decrementarQteMovimentos();
             if(pecaCapturada != null) {
-                tab.colocarPeca(pecaCapturada, destino){
+                tab.colocarPeca(pecaCapturada, destino);
+                {
                     capturadas.Remove(pecaCapturada);
                 }
             }
@@ -58,6 +59,14 @@ namespace xadrez.jogoXadrez {
             }
             else {
                 xeque = false;
+            }
+            if (testeXequemate(adversaria(jogadorAtual))) {
+                terminada = true;
+            }
+            else {
+                turno++;
+                mudaJogador();
+
             }
 
             turno++;
@@ -144,7 +153,29 @@ namespace xadrez.jogoXadrez {
             return false;
         }
 
-
+        public bool testeXequemate(Cor cor) {
+            if (!estaEmXeque(cor)) {
+                return false;
+            }
+            foreach(Peca x in pecasEmJogo(cor)) {
+                bool[,] mat = x.movimentosPossiveis();
+                for(int i=0; i<tab.linhas; i++) {
+                    for(int j =0; j < tab.colunas; j++) {
+                        if (mat[i, j]) {
+                            Posicao origem = x.Posicao;
+                            Posicao destino = new Posicao(i, j);
+                            Peca pecaCapturada = executaMovimento(origem, destino);
+                            bool testeXeque = estaEmXeque(cor);
+                            desfazMovimento(origem, destino, pecaCapturada);
+                            if (!testeXeque) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
         public void colocarNovaPeca(char coluna, int linha, Peca peca) {
             tab.colocarPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
             pecas.Add(peca);
